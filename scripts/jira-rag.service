@@ -1,0 +1,14 @@
+[Unit]
+Description=Jira RAG HTTP server (search + webhook)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/jira-rag
+EnvironmentFile=/opt/jira-rag/.env
+ExecStart=/opt/jira-rag/.venv/bin/jira-rag serve
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

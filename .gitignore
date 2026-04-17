@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+config.yaml
+qdrant_storage/
+.DS_Store
+.idea/
+.vscode/
+*.log

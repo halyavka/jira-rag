@@ -1,0 +1,112 @@
+# jira-rag stack.
+#
+# Before first run:
+#   docker network create rag-shared
+#   cp config.example.yaml config.yaml && edit
+#   cp .env.example .env && edit
+#
+# Typical lifecycle:
+#   docker compose --profile init run --rm migrate         # once
+#   docker compose --profile init run --rm init-qdrant     # once
+#   docker compose up -d                                   # serve + sync-cron
+#   docker compose --profile init run --rm sync-once --full  # first data load
+#
+# The `rag-shared` external network lets a sibling compose (e.g. mirelia-agent)
+# reach `jira-rag` and `qdrant` by service name on the same docker network.
+
+x-base: &base
+  image: jira-rag:latest
+  build: .
+  env_file: .env
+  environment:
+    QDRANT_HOST: qdrant
+  volumes:
+    - ./config.yaml:/app/config.yaml:ro
+  networks:
+    - rag-shared
+    - default
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: jira-rag-qdrant
+    restart: unless-stopped
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    # Qdrant is reached via service name `qdrant` over rag-shared; host
+    # publishing is optional (uncomment for local debugging).
+    # ports:
+    #   - "6333:6333"
+    networks:
+      - rag-shared
+      - default
+
+  jira-rag:
+    <<: *base
+    container_name: jira-rag
+    restart: unless-stopped
+    ports:
+      - "8100:8100"
+    depends_on:
+      qdrant:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8100/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  # Cron safety-net: webhook catches most events, this catches the rest.
+  sync-cron:
+    <<: *base
+    container_name: jira-rag-sync-cron
+    restart: unless-stopped
+    depends_on:
+      jira-rag:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      "sleep 60;
+       while true; do
+         jira-rag sync || echo '[sync] failed, will retry next cycle';
+         sleep 3600;
+       done"
+
+  # ── One-shot jobs (run via `--profile init`) ─────────────────────────────
+  migrate:
+    <<: *base
+    container_name: jira-rag-migrate
+    restart: "no"
+    profiles: ["init"]
+    depends_on:
+      - qdrant
+    command: ["python", "scripts/migrate.py"]
+
+  init-qdrant:
+    <<: *base
+    container_name: jira-rag-init-qdrant
+    restart: "no"
+    profiles: ["init"]
+    depends_on:
+      - qdrant
+    command: ["python", "scripts/init_qdrant.py"]
+
+  sync-once:
+    <<: *base
+    container_name: jira-rag-sync-once
+    restart: "no"
+    profiles: ["init"]
+    depends_on:
+      - qdrant
+    entrypoint: ["jira-rag", "sync"]
+    command: []   # override with `--full` at invocation time
+
+volumes:
+  qdrant_storage:
+
+networks:
+  rag-shared:
+    external: true
+  default:

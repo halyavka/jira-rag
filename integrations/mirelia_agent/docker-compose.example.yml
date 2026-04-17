@@ -1,0 +1,53 @@
+# Example docker-compose.yml for mirelia-agent — deploy alongside jira-rag.
+#
+# Prerequisite (one-time, from either side):
+#   docker network create rag-shared
+#
+# Rename this file to `docker-compose.yml` in mirelia-agent repo root.
+
+services:
+  # Long-running Slack bot (answers /fix, /write mentions).
+  mirelia-bot:
+    build: .
+    image: mirelia-agent:latest
+    container_name: mirelia-bot
+    restart: unless-stopped
+    env_file:
+      - .env             # mirelia-specific (SLACK_*, ANTHROPIC_API_KEY, etc.)
+      - shared.env       # shared with jira-rag (JIRA_*, SUPABASE_DATABASE_URL)
+    environment:
+      # Reach jira-rag and qdrant by docker service name on rag-shared network.
+      JIRA_RAG_URL: http://jira-rag:8100
+      QDRANT_HOST: qdrant
+    volumes:
+      # Test artifacts / failure pngs produced by the agent.
+      - ./target:/app/target
+      # If running `claude -p` subprocess, mount pre-authorised session:
+      # - ~/.claude:/root/.claude:ro
+    networks:
+      - rag-shared
+      - default
+    command: ["slack_bot.py"]
+
+  # One-off fix/write invocations — use `docker compose run --rm mirelia-cli ...`
+  mirelia-cli:
+    image: mirelia-agent:latest
+    build: .
+    profiles: ["cli"]
+    env_file:
+      - .env
+      - shared.env
+    environment:
+      JIRA_RAG_URL: http://jira-rag:8100
+      QDRANT_HOST: qdrant
+    volumes:
+      - ./target:/app/target
+    networks:
+      - rag-shared
+      - default
+    # usage: docker compose run --rm mirelia-cli main.py fix --failure-id <uuid> --jira PID-4275
+
+networks:
+  rag-shared:
+    external: true
+  default:

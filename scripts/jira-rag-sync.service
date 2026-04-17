@@ -1,0 +1,8 @@
+[Unit]
+Description=Jira RAG incremental sync (cron safety-net for webhook)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/jira-rag
+EnvironmentFile=/opt/jira-rag/.env
+ExecStart=/opt/jira-rag/scripts/run_sync.sh

@@ -1,0 +1,42 @@
+--- a/main.py
++++ b/main.py
+@@ -45,17 +45,33 @@ async def run_fix(failure_id: str, jira_task_id: str = ""):
+     from fix_graph import build_fix_graph
+     from fix_state import FixTestState
+-    from tools.jira_reader import fetch_jira_issue, format_for_prompt
++    from tools.jira_reader import fetch_jira_issue, format_for_prompt
++    from jira_rag_client import (
++        JiraRagClient,
++        format_issue_for_prompt,
++    )
+
+     cfg = get_config()
+     graph = build_fix_graph()
++    rag = JiraRagClient()   # reads JIRA_RAG_URL from env (http://jira-rag:8100 in compose)
+
+     # Load Jira context once up front (before any LLM calls)
+     jira_context = ""
+     if jira_task_id:
+-        issue = fetch_jira_issue(jira_task_id)
+-        jira_context = format_for_prompt(issue)
++        # Prefer jira-rag (has comments + MRs). Fall back to direct Jira API
++        # when the ticket isn't indexed yet (e.g. just created) or the service
++        # is unreachable — JiraRagClient returns None on any failure.
++        rag_issue = rag.get_issue(jira_task_id)
++        if rag_issue is not None:
++            jira_context = format_issue_for_prompt(rag_issue)
++            print(f"[jira-rag] Loaded {jira_task_id} from local index")
++        else:
++            issue = fetch_jira_issue(jira_task_id)
++            jira_context = format_for_prompt(issue)
++            if jira_context:
++                print(f"[jira] Fallback: loaded {jira_task_id} via direct API")
+         if jira_context:
+             print(f"[jira] Loaded task {jira_task_id}: ...")
+         else:
+             print(f"[jira] WARNING: Could not load task {jira_task_id}")
+
+--- a/requirements.txt (or pyproject.toml)
++++ b/requirements.txt
+@@ existing deps @@
++jira-rag-client @ git+https://github.com/halyavka/jira-rag.git#subdirectory=integrations/jira_rag_client

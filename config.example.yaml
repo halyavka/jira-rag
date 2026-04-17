@@ -1,0 +1,74 @@
+jira:
+  url: "https://your-org.atlassian.net"
+  email: "your-email@example.com"
+  # Atlassian API token: https://id.atlassian.com/manage-profile/security/api-tokens
+  api_token: "${JIRA_API_TOKEN}"
+  # Projects to index. Each gets its own sync cursor.
+  projects:
+    - key: "PROJ"
+      name: "Main product"
+    - key: "PLAT"
+      name: "Platform"
+  # Extra JQL to narrow the indexed set (optional).
+  # Applied as: "project = <key> AND (<jql_filter>)" if set.
+  jql_filter: ""
+  # Page size for search requests.
+  page_size: 100
+  # Include issues updated in the last N days on a full resync.
+  full_resync_lookback_days: 3650
+
+embeddings:
+  # "fastembed" = local (no API key), "voyage" = cloud.
+  provider: "fastembed"
+  # FastEmbed local model. Dim must match embedding_dimension.
+  #   BAAI/bge-small-en-v1.5  dim=384
+  #   BAAI/bge-base-en-v1.5   dim=768
+  #   BAAI/bge-large-en-v1.5  dim=1024
+  fastembed_model: "BAAI/bge-small-en-v1.5"
+  embedding_dimension: 384
+  # Voyage (only used if provider=voyage)
+  voyage_api_key: ""
+  voyage_model: "voyage-3-lite"   # dim=512
+
+supabase:
+  # PostgreSQL connection string from Supabase → Settings → Database → Connection string
+  database_url: "${SUPABASE_DATABASE_URL}"
+  schema: "jira"
+
+qdrant:
+  host: "${QDRANT_HOST:localhost}"
+  port: 6333
+  grpc_port: 6334
+
+indexer:
+  # Process issues in batches of this size (embed + upsert together).
+  batch_size: 32
+  # If true, re-embed all issues regardless of updated timestamp.
+  force_reindex: false
+  # Index comments as separate vector entries (better for discussion search).
+  index_comments: true
+  # Index development info (linked MRs, branches, commits).
+  index_merge_requests: true
+
+search:
+  # Default top-k returned to callers.
+  default_top_k: 5
+  # Minimum cosine score to include a hit.
+  min_score: 0.35
+  # When a user query matches the comments collection, also hydrate the parent issue.
+  hydrate_parent_issue: true
+
+server:
+  # Optional HTTP server exposing /search for other agents.
+  host: "0.0.0.0"
+  port: 8100
+
+webhook:
+  # Enables POST /webhook/jira/{secret} on the serve HTTP server.
+  # Configure Jira → System → Webhooks with URL:
+  #   https://<public-host>/webhook/jira/<secret>
+  # Events to subscribe to: issue_created, issue_updated, issue_deleted,
+  #   comment_created, comment_updated, comment_deleted, worklog_updated.
+  enabled: false
+  secret: "${JIRA_WEBHOOK_SECRET}"
+  enforce_project_allowlist: true

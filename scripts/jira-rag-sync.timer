@@ -1,0 +1,13 @@
+[Unit]
+Description=Run Jira RAG incremental sync every hour
+Requires=jira-rag-sync.service
+
+[Timer]
+# Run 5 minutes after boot, then hourly.
+OnBootSec=5min
+OnUnitActiveSec=1h
+# Make up for missed runs (e.g. after reboot).
+Persistent=true
+
+[Install]
+WantedBy=timers.target

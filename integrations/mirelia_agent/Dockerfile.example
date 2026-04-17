@@ -1,0 +1,46 @@
+# Example Dockerfile for mirelia-agent — adapt to your real runtime.
+# Place as `Dockerfile` in mirelia-agent repo root.
+#
+# Notes:
+#   - mirelia uses `claude -p` subprocess for LLM calls (see CLAUDE.md). That
+#     requires the Claude Code CLI to be installed. On a server without an
+#     OAuth session, use ANTHROPIC_API_KEY instead and skip the claude install.
+#   - Tests are executed via gradle against the mirelia-aqa repo. If you run
+#     tests inside this container, install the JDK + gradle; otherwise keep
+#     them on the host and volume-mount the project.
+
+FROM python:3.11-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      gcc libpq-dev git curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# ── Optional: install Claude Code CLI for `claude -p` subprocess ─────────────
+# Uncomment if you want to run `claude -p` inside the container. Requires a
+# pre-authorised ~/.claude dir mounted in, OR set ANTHROPIC_API_KEY.
+# RUN curl -fsSL https://claude.ai/install.sh | sh
+
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+# jira-rag-client: HTTP wrapper for the sibling jira-rag service.
+# Lives inside the jira-rag monorepo under integrations/jira_rag_client.
+# Pinned to a ref for reproducible builds (replace @main with a tag/commit).
+RUN pip install "git+https://github.com/halyavka/jira-rag.git@main#subdirectory=integrations/jira_rag_client"
+
+COPY . .
+
+# Defaults — override via compose env section or .env
+ENV JIRA_RAG_URL=http://jira-rag:8100 \
+    QDRANT_HOST=qdrant
+
+# No default CMD — mirelia is invoked per-task:
+#   docker compose run --rm mirelia python main.py fix --failure-id <uuid>
+# For a long-running Slack-bot mode, override CMD to `python slack_bot.py`.
+ENTRYPOINT ["python"]
+CMD ["main.py", "--help"]

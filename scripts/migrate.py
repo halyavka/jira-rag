@@ -26,11 +26,15 @@ def main() -> None:
 
     cfg = load_config(args.config)
     db = create_db_connection(cfg.supabase)
+    schema = cfg.supabase.schema_name
 
-    # Track applied migrations in a dedicated table.
+    # Ensure target schema exists before any bookkeeping — otherwise unqualified
+    # `schema_migrations` writes fall back to `public` via search_path and the
+    # next run thinks migrations already ran while the target schema is empty.
+    db.execute(f'CREATE SCHEMA IF NOT EXISTS "{schema}"')
     db.execute(
-        """
-        CREATE TABLE IF NOT EXISTS schema_migrations (
+        f"""
+        CREATE TABLE IF NOT EXISTS "{schema}".schema_migrations (
             version TEXT PRIMARY KEY,
             applied_at TIMESTAMPTZ NOT NULL DEFAULT now()
         )
@@ -39,7 +43,9 @@ def main() -> None:
 
     applied = {
         row["version"]
-        for row in db.execute("SELECT version FROM schema_migrations")
+        for row in db.execute(
+            f'SELECT version FROM "{schema}".schema_migrations'
+        )
     }
 
     files = sorted(MIGRATIONS_DIR.glob("*.sql"))
@@ -57,7 +63,8 @@ def main() -> None:
         with db.cursor() as cur:
             cur.execute(sql)
             cur.execute(
-                "INSERT INTO schema_migrations(version) VALUES (%s)", (version,)
+                f'INSERT INTO "{schema}".schema_migrations(version) VALUES (%s)',
+                (version,),
             )
         print(f"✓ {version}")
 

@@ -1,12 +1,11 @@
-"""Jira Cloud REST API wrapper (atlassian-python-api + direct /rest/dev-status for MRs)."""
+"""Jira Cloud REST API wrapper (httpx + /rest/api/3/search/jql + /rest/dev-status for MRs)."""
 
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Any, Iterator
+from typing import Any, Iterator, Optional
 
 import httpx
-from atlassian import Jira
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 from jira_rag.config.schema import JiraConfig
@@ -39,14 +38,6 @@ _ISSUE_FIELDS = [
 class JiraClient:
     def __init__(self, config: JiraConfig) -> None:
         self._config = config
-        self._client = Jira(
-            url=config.url,
-            username=config.email,
-            password=config.api_token,
-            cloud=True,
-        )
-        # Separate httpx client for the internal /rest/dev-status endpoint
-        # (not exposed by atlassian-python-api).
         self._http = httpx.Client(
             base_url=config.url,
             auth=(config.email, config.api_token),
@@ -54,23 +45,35 @@ class JiraClient:
             timeout=30.0,
         )
 
-    # ── issues (JQL, paginated) ──────────────────────────────────────────────
+    # ── issues (JQL via /rest/api/3/search/jql — token-paginated) ────────────
+    # Atlassian retired /rest/api/3/search (the old `startAt`/`total` endpoint)
+    # in 2025. Its replacement exposes cursor-based pagination via
+    # `nextPageToken` and no longer returns `total`.
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=10))
-    def _jql_page(self, jql: str, start_at: int, max_results: int) -> dict:
-        return self._client.jql(
-            jql,
-            start=start_at,
-            limit=max_results,
-            fields=",".join(_ISSUE_FIELDS),
-            expand="changelog",
-        )
+    def _jql_page(
+        self,
+        jql: str,
+        next_page_token: Optional[str],
+        max_results: int,
+    ) -> dict:
+        params: dict[str, Any] = {
+            "jql": jql,
+            "fields": ",".join(_ISSUE_FIELDS),
+            "expand": "changelog",
+            "maxResults": max_results,
+        }
+        if next_page_token:
+            params["nextPageToken"] = next_page_token
+        resp = self._http.get("/rest/api/3/search/jql", params=params)
+        resp.raise_for_status()
+        return resp.json()
 
     def iter_project_issues(
         self,
         project_key: str,
         updated_since: datetime | None = None,
     ) -> Iterator[dict[str, Any]]:
-        """Yield raw issue dicts from Jira, newest updates first.
+        """Yield raw issue dicts from Jira, ordered by updated ASC.
 
         `updated_since` is used as a cursor: we ask for issues with
         `updated >= <cursor>`. Callers should subtract a small safety window
@@ -86,18 +89,17 @@ class JiraClient:
 
         logger.info("jira.jql", jql=jql)
 
-        start_at = 0
+        next_page_token: Optional[str] = None
         page_size = self._config.page_size
         while True:
-            page = self._jql_page(jql, start_at, page_size)
+            page = self._jql_page(jql, next_page_token, page_size)
             issues = page.get("issues", []) or []
             if not issues:
                 break
             for issue in issues:
                 yield issue
-            total = page.get("total", 0)
-            start_at += len(issues)
-            if start_at >= total:
+            next_page_token = page.get("nextPageToken")
+            if not next_page_token:
                 break
 
     # ── single issue (used by webhook path) ──────────────────────────────────

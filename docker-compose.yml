@@ -33,10 +33,12 @@ services:
     restart: unless-stopped
     volumes:
       - qdrant_storage:/qdrant/storage
-    # Qdrant is reached via service name `qdrant` over rag-shared; host
-    # publishing is optional (uncomment for local debugging).
-    # ports:
-    #   - "6333:6333"
+    # Qdrant is reached via service name `qdrant` over rag-shared. On hosts
+    # where another qdrant already occupies :6333 (e.g. mirelia-agent), we
+    # expose ours on :6335 so you can introspect it from the host:
+    #   curl http://localhost:6335/collections
+    ports:
+      - "6335:6333"
     networks:
       - rag-shared
       - default

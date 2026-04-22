@@ -2,10 +2,40 @@
 
 from __future__ import annotations
 
+import json
 from datetime import datetime
 from typing import Any
 
 from jira_rag.utils.text import adf_to_text, normalise_text
+
+
+def _parse_smart_checklist(raw_value: Any) -> str:
+    """Extract markdown text from a Smart Checklist custom field value.
+
+    Jira stores Smart Checklist as a JSON-encoded string like
+        '{"v": "### Section\\n+ item\\n+ item"}'
+    (sometimes already a dict on some renderings). We peel off the `v`
+    wrapper and return the markdown so it can be embedded alongside
+    description text.
+    """
+    if raw_value is None:
+        return ""
+    if isinstance(raw_value, str):
+        stripped = raw_value.strip()
+        if not stripped:
+            return ""
+        if stripped.startswith("{"):
+            try:
+                parsed = json.loads(stripped)
+                if isinstance(parsed, dict) and "v" in parsed:
+                    return str(parsed["v"]).strip()
+            except json.JSONDecodeError:
+                pass
+        return stripped
+    if isinstance(raw_value, dict):
+        if "v" in raw_value:
+            return str(raw_value["v"]).strip()
+    return ""
 
 
 def _parse_dt(value: str | None) -> datetime | None:
@@ -54,11 +84,17 @@ def issue_to_row(raw: dict[str, Any], project_key: str) -> dict[str, Any]:
     parent = fields.get("parent") or {}
     resolution = _name(fields.get("resolution"))
 
+    checklist_text = normalise_text(_parse_smart_checklist(fields.get("customfield_10720")))
+    checklist_progress = (fields.get("customfield_10289") or "").strip() \
+        if isinstance(fields.get("customfield_10289"), str) else ""
+
     return {
         "key": raw.get("key"),
         "project_key": project_key,
         "summary": summary,
         "description_text": description_text,
+        "checklist_text": checklist_text,
+        "checklist_progress": checklist_progress,
         "issue_type": _name(fields.get("issuetype")),
         "status": _name(status),
         "status_category": status_category,

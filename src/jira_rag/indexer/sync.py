@@ -23,6 +23,7 @@ so upserts overwrite.
 from __future__ import annotations
 
 import hashlib
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Any
@@ -103,7 +104,11 @@ class SyncService:
 
     def sync_project(self, project_key: str, *, full: bool = False) -> SyncResult:
         cursor = self._compute_cursor(project_key, full=full)
-        logger.info("sync.project.start", project=project_key, cursor=cursor)
+        concurrency = max(1, self._config.indexer.concurrency)
+        logger.info(
+            "sync.project.start",
+            project=project_key, cursor=cursor, concurrency=concurrency,
+        )
 
         result = SyncResult(project_key=project_key)
 
@@ -111,15 +116,36 @@ class SyncService:
         comment_batch: list[dict[str, Any]] = []
         mr_batch: list[dict[str, Any]] = []
 
-        for raw_issue in self._jira.iter_project_issues(project_key, updated_since=cursor):
-            self._process_issue(raw_issue, project_key, result, issue_batch, comment_batch, mr_batch)
+        # Buffer raw issues from JQL and parallel-fetch their per-issue
+        # extras (comments, dev-status, remote-links) in the pool. Then
+        # process each issue serially so DB and Qdrant writes stay
+        # single-threaded.
+        buffer: list[dict[str, Any]] = []
 
-            if len(issue_batch) >= self._config.indexer.batch_size:
-                self._flush_issues(issue_batch, result)
-            if len(comment_batch) >= self._config.indexer.batch_size:
-                self._flush_comments(comment_batch, result)
-            if len(mr_batch) >= self._config.indexer.batch_size:
-                self._flush_merge_requests(mr_batch, result)
+        def flush_buffer(pool: ThreadPoolExecutor) -> None:
+            if not buffer:
+                return
+            extras_list = list(pool.map(self._fetch_extras, buffer))
+            for raw, extras in zip(buffer, extras_list):
+                self._process_issue(
+                    raw, project_key, result,
+                    issue_batch, comment_batch, mr_batch,
+                    extras=extras,
+                )
+                if len(issue_batch) >= self._config.indexer.batch_size:
+                    self._flush_issues(issue_batch, result)
+                if len(comment_batch) >= self._config.indexer.batch_size:
+                    self._flush_comments(comment_batch, result)
+                if len(mr_batch) >= self._config.indexer.batch_size:
+                    self._flush_merge_requests(mr_batch, result)
+            buffer.clear()
+
+        with ThreadPoolExecutor(max_workers=concurrency) as pool:
+            for raw_issue in self._jira.iter_project_issues(project_key, updated_since=cursor):
+                buffer.append(raw_issue)
+                if len(buffer) >= concurrency:
+                    flush_buffer(pool)
+            flush_buffer(pool)
 
         self._flush_issues(issue_batch, result)
         self._flush_comments(comment_batch, result)
@@ -139,6 +165,34 @@ class SyncService:
             mrs_embedded=result.mrs_embedded,
         )
         return result
+
+    def _fetch_extras(self, raw_issue: dict[str, Any]) -> dict[str, Any]:
+        """Fetch the three per-issue HTTP payloads. Runs on worker threads.
+
+        Any fetch error is caught and logged — the issue still gets processed
+        with the partial data we have (mirrors pre-parallel behaviour).
+        """
+        key = raw_issue.get("key")
+        issue_id = raw_issue.get("id")
+        extras: dict[str, Any] = {"comments": [], "dev_info": {}, "remote_links": []}
+
+        if self._config.indexer.index_comments and key:
+            try:
+                extras["comments"] = list(self._jira.iter_comments(key))
+            except Exception as exc:
+                logger.warning("fetch.comments.failed", issue_key=key, error=str(exc)[:120])
+
+        if self._config.indexer.index_merge_requests and issue_id:
+            try:
+                extras["dev_info"] = self._jira.get_dev_info(issue_id)
+            except Exception as exc:
+                logger.warning("fetch.dev_info.failed", issue_key=key, error=str(exc)[:120])
+            try:
+                extras["remote_links"] = self._jira.get_remote_links(key)
+            except Exception as exc:
+                logger.warning("fetch.remote_links.failed", issue_key=key, error=str(exc)[:120])
+
+        return extras
 
     def sync_single_issue(self, issue_key: str) -> SyncResult | None:
         """Fetch one issue by key and re-index it. Used by the webhook path.
@@ -226,6 +280,7 @@ class SyncService:
         issue_batch: list[dict[str, Any]],
         comment_batch: list[dict[str, Any]],
         mr_batch: list[dict[str, Any]],
+        extras: dict[str, Any] | None = None,
     ) -> None:
         row = issue_to_row(raw_issue, project_key)
         if not row.get("key"):
@@ -240,9 +295,16 @@ class SyncService:
         ):
             result.last_issue_update = row["updated_at"]
 
-        self._ingest_comments(row["key"], project_key, comment_batch)
+        self._ingest_comments(
+            row["key"], project_key, comment_batch,
+            prefetched=extras["comments"] if extras else None,
+        )
         if self._config.indexer.index_merge_requests:
-            self._ingest_merge_requests(raw_issue, row["key"], project_key, mr_batch, result)
+            self._ingest_merge_requests(
+                raw_issue, row["key"], project_key, mr_batch, result,
+                prefetched_dev_info=extras["dev_info"] if extras else None,
+                prefetched_remote_links=extras["remote_links"] if extras else None,
+            )
 
         issue_embed = self._prepare_issue_for_embedding(row)
         if issue_embed is not None:
@@ -266,10 +328,12 @@ class SyncService:
         issue_key: str,
         project_key: str,
         batch: list[dict[str, Any]],
+        prefetched: list[dict[str, Any]] | None = None,
     ) -> None:
         if not self._config.indexer.index_comments:
             return
-        for raw_comment in self._jira.iter_comments(issue_key):
+        source = prefetched if prefetched is not None else self._jira.iter_comments(issue_key)
+        for raw_comment in source:
             row = comment_to_row(raw_comment, issue_key)
             self._comments.upsert(row)
 
@@ -302,19 +366,26 @@ class SyncService:
         project_key: str,
         batch: list[dict[str, Any]],
         result: SyncResult,
+        prefetched_dev_info: dict | None = None,
+        prefetched_remote_links: list | None = None,
     ) -> None:
         mr_rows: list[dict[str, Any]] = []
 
         # Dev panel (preferred — has branches, state, author).
         try:
-            dev_info = self._jira.get_dev_info(raw_issue.get("id"))
+            dev_info = prefetched_dev_info \
+                if prefetched_dev_info is not None \
+                else self._jira.get_dev_info(raw_issue.get("id"))
             mr_rows.extend(dev_info_to_mr_rows(dev_info, issue_key))
         except Exception as exc:
             result.warnings.append(f"dev_info:{issue_key}:{exc}")
 
         # Remote links fallback / augmentation.
         try:
-            for raw_link in self._jira.get_remote_links(issue_key):
+            links = prefetched_remote_links \
+                if prefetched_remote_links is not None \
+                else self._jira.get_remote_links(issue_key)
+            for raw_link in links:
                 row = remote_link_to_mr_row(raw_link, issue_key)
                 if row:
                     mr_rows.append(row)
@@ -385,12 +456,16 @@ class SyncService:
 
         The primary search use-case is "find the task that describes feature X",
         so we prioritise summary + description and add light metadata that helps
-        the embedding disambiguate.
+        the embedding disambiguate. Smart Checklist (acceptance criteria /
+        HTTP-spec bullets) is included because it often contains the most
+        structured and concrete "how it should work" content.
         """
         parts: list[str] = [
             f"[{row['issue_type']}] {row['summary']}",
             row["description_text"] or "",
         ]
+        if row.get("checklist_text"):
+            parts.append("Acceptance criteria / checklist:\n" + row["checklist_text"])
         if row.get("labels"):
             parts.append("labels: " + ", ".join(row["labels"]))
         if row.get("components"):

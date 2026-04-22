@@ -28,6 +28,11 @@ _ISSUE_FIELDS = [
     "fixVersions",
     "parent",
     "customfield_10014",  # Epic Link (default id on many Jira Cloud sites)
+    # Smart Checklist plugin (https://marketplace.atlassian.com/apps/1219712):
+    # stored as {"v": "markdown-like text"}; contains acceptance criteria and
+    # HTTP/business-logic specs that describe how a feature must behave.
+    "customfield_10720",  # Smart Checklist
+    "customfield_10289",  # Smart Checklist Progress ("68/69 - Done")
     "created",
     "updated",
     "resolutiondate",
@@ -153,8 +158,14 @@ class JiraClient:
     # that the Dev Panel itself calls. Requires the issue's numeric id.
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=1, max=10))
     def get_dev_info(self, issue_id: str) -> dict[str, Any]:
+        """Fetch linked PR/MR info from the Jira Dev Panel.
+
+        Only probes providers listed in `config.jira.dev_providers` (default
+        `["GitLab"]`) — the full list is GitLab/stash/GitHub/bitbucket, but
+        probing unused ones wastes ~75% of the sync budget on most sites.
+        """
         result: dict[str, Any] = {}
-        for application_type in ("GitLab", "stash", "GitHub", "bitbucket"):
+        for application_type in self._config.dev_providers:
             resp = self._http.get(
                 "/rest/dev-status/1.0/issue/detail",
                 params={

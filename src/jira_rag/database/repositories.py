@@ -33,6 +33,13 @@ class IssuesRepo:
         self._db = db
 
     def upsert(self, row: dict[str, Any]) -> None:
+        payload = {
+            # defaults so upsert works whether or not mapper set these
+            "checklist_text": "",
+            "checklist_progress": "",
+            **row,
+            "raw": jsonb(row.get("raw") or {}),
+        }
         self._db.execute(
             """
             INSERT INTO issues(
@@ -40,37 +47,41 @@ class IssuesRepo:
                 status, status_category, priority, resolution,
                 assignee, reporter, labels, components, fix_versions,
                 parent_key, epic_key, progress_percent,
+                checklist_text, checklist_progress,
                 created_at, updated_at, resolved_at, raw
             ) VALUES (
                 %(key)s, %(project_key)s, %(summary)s, %(description_text)s, %(issue_type)s,
                 %(status)s, %(status_category)s, %(priority)s, %(resolution)s,
                 %(assignee)s, %(reporter)s, %(labels)s, %(components)s, %(fix_versions)s,
                 %(parent_key)s, %(epic_key)s, %(progress_percent)s,
+                %(checklist_text)s, %(checklist_progress)s,
                 %(created_at)s, %(updated_at)s, %(resolved_at)s, %(raw)s
             )
             ON CONFLICT (key) DO UPDATE SET
-                project_key      = EXCLUDED.project_key,
-                summary          = EXCLUDED.summary,
-                description_text = EXCLUDED.description_text,
-                issue_type       = EXCLUDED.issue_type,
-                status           = EXCLUDED.status,
-                status_category  = EXCLUDED.status_category,
-                priority         = EXCLUDED.priority,
-                resolution       = EXCLUDED.resolution,
-                assignee         = EXCLUDED.assignee,
-                reporter         = EXCLUDED.reporter,
-                labels           = EXCLUDED.labels,
-                components       = EXCLUDED.components,
-                fix_versions     = EXCLUDED.fix_versions,
-                parent_key       = EXCLUDED.parent_key,
-                epic_key         = EXCLUDED.epic_key,
-                progress_percent = EXCLUDED.progress_percent,
-                created_at       = EXCLUDED.created_at,
-                updated_at       = EXCLUDED.updated_at,
-                resolved_at      = EXCLUDED.resolved_at,
-                raw              = EXCLUDED.raw
+                project_key        = EXCLUDED.project_key,
+                summary            = EXCLUDED.summary,
+                description_text   = EXCLUDED.description_text,
+                issue_type         = EXCLUDED.issue_type,
+                status             = EXCLUDED.status,
+                status_category    = EXCLUDED.status_category,
+                priority           = EXCLUDED.priority,
+                resolution         = EXCLUDED.resolution,
+                assignee           = EXCLUDED.assignee,
+                reporter           = EXCLUDED.reporter,
+                labels             = EXCLUDED.labels,
+                components         = EXCLUDED.components,
+                fix_versions       = EXCLUDED.fix_versions,
+                parent_key         = EXCLUDED.parent_key,
+                epic_key           = EXCLUDED.epic_key,
+                progress_percent   = EXCLUDED.progress_percent,
+                checklist_text     = EXCLUDED.checklist_text,
+                checklist_progress = EXCLUDED.checklist_progress,
+                created_at         = EXCLUDED.created_at,
+                updated_at         = EXCLUDED.updated_at,
+                resolved_at        = EXCLUDED.resolved_at,
+                raw                = EXCLUDED.raw
             """,
-            {**row, "raw": jsonb(row.get("raw") or {})},
+            payload,
         )
 
     def mark_embedded(self, key: str, embed_hash: str, qdrant_point_id: str) -> None:

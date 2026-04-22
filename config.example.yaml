@@ -16,6 +16,11 @@ jira:
   page_size: 100
   # Include issues updated in the last N days on a full resync.
   full_resync_lookback_days: 3650
+  # Which Dev Panel providers to probe per issue. Each entry costs 1 HTTP
+  # call. Default probes just GitLab. Supported: GitLab, stash (Bitbucket
+  # Server / Data Center), GitHub, bitbucket (Bitbucket Cloud).
+  dev_providers:
+    - GitLab
 
 embeddings:
   # "fastembed" = local (no API key), "voyage" = cloud.

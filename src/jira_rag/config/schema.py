@@ -23,6 +23,10 @@ class JiraConfig(BaseModel):
     jql_filter: str = ""
     page_size: int = 100
     full_resync_lookback_days: int = 3650
+    # Dev Panel providers to query via /rest/dev-status. Default is just
+    # GitLab — probing all four (GitLab/stash/GitHub/bitbucket) on every
+    # issue was costing ~75% of the sync time on sites that only use one.
+    dev_providers: list[str] = Field(default_factory=lambda: ["GitLab"])
 
 
 class EmbeddingsConfig(BaseModel):
@@ -51,6 +55,11 @@ class IndexerConfig(BaseModel):
     force_reindex: bool = False
     index_comments: bool = True
     index_merge_requests: bool = True
+    # Per-issue HTTP fetches (comment / dev-status / remote-link) are
+    # parallelised across this many issues at once. Network-bound, so 8-16 is
+    # safe for Jira Cloud (rate limit ~50 req/s). Stays sequential for DB &
+    # Qdrant writes.
+    concurrency: int = 8
 
 
 class SearchConfig(BaseModel):

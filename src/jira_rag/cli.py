@@ -213,6 +213,30 @@ def serve_cmd(ctx: click.Context) -> None:
             return {"error": "not_found"}
         return ctx_obj.to_dict()
 
+    # ── /ask: synthesised answer via Claude (Phase 1) ─────────────────────
+    if cfg.synthesis.enabled:
+        from fastapi import Body
+        from jira_rag.synthesis import create_synthesis_service
+
+        synth = create_synthesis_service(cfg, searcher)
+        logger.info(
+            "synthesis.enabled",
+            synthesis_model=cfg.synthesis.synthesis_model,
+            expansion_model=cfg.synthesis.query_expansion_model,
+        )
+
+        @app.post("/ask")
+        def ask(payload: dict = Body(...)) -> dict:
+            q = (payload.get("q") or "").strip()
+            if not q:
+                return {"error": "missing 'q'"}
+            project = payload.get("project") or []
+            project_keys = [p.upper() for p in project] if project else None
+            result = synth.ask(q, project_keys=project_keys)
+            return result.to_dict()
+    else:
+        logger.info("synthesis.disabled", hint="set synthesis.enabled=true in config + ANTHROPIC_API_KEY env")
+
     if cfg.webhook.enabled:
         from jira_rag.webhook import build_webhook_router
 

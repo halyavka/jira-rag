@@ -235,6 +235,44 @@ class StatusHistoryRepo:
         )
 
 
+class FeatureTagsRepo:
+    """Lookup + filter helpers for the jira.issue_features controlled-vocab tags."""
+
+    def __init__(self, db: DatabaseConnection) -> None:
+        self._db = db
+
+    def all_feature_names(self) -> list[str]:
+        return [r["name"] for r in self._db.execute(
+            "SELECT name FROM features ORDER BY name"
+        )]
+
+    def all_features(self) -> list[dict]:
+        return self._db.execute(
+            "SELECT name, description FROM features ORDER BY name"
+        )
+
+    def keys_with_features(
+        self,
+        features: list[str],
+        project_keys: list[str] | None = None,
+    ) -> set[str]:
+        """Return issue keys tagged with ANY of the given features."""
+        if not features:
+            return set()
+        conditions = ["feature = ANY(%s)"]
+        params: list[Any] = [list(features)]
+        if project_keys:
+            conditions.append("""issue_key IN (
+                SELECT key FROM issues WHERE project_key = ANY(%s)
+            )""")
+            params.append([p.upper() for p in project_keys])
+        rows = self._db.execute(
+            f"SELECT DISTINCT issue_key FROM issue_features WHERE {' AND '.join(conditions)}",
+            tuple(params),
+        )
+        return {r["issue_key"] for r in rows}
+
+
 class SyncStateRepo:
     def __init__(self, db: DatabaseConnection) -> None:
         self._db = db

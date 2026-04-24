@@ -173,8 +173,16 @@ class Searcher:
         min_score: float | None = None,
         include_comments: bool = True,
         include_merge_requests: bool = False,
+        must_issue_types: list[str] | None = None,
+        must_status_categories: list[str] | None = None,
+        must_issue_keys: set[str] | None = None,
     ) -> list[SearchHit]:
         """Semantic search primarily over issue summary+description.
+
+        Structural filters (``must_issue_types`` / ``must_status_categories``)
+        apply only to the ISSUES collection — comment/MR payloads don't carry
+        parent-issue metadata, so we post-filter them in-memory against
+        already-known issue keys further below.
 
         This is the call other agents should use to answer
         "which ticket describes feature X and how should it work?".
@@ -187,16 +195,52 @@ class Searcher:
         # over-fetch each collection so merging doesn't under-fill top_k
         per_source_limit = max(top_k * 3, 10)
 
+        from qdrant_client import models as qd  # lazy import to avoid cycles
+        must_conditions: list[Any] = []
+        if must_issue_types:
+            must_conditions.append(
+                qd.FieldCondition(
+                    key="issue_type", match=qd.MatchAny(any=list(must_issue_types)),
+                )
+            )
+        if must_status_categories:
+            must_conditions.append(
+                qd.FieldCondition(
+                    key="status_category",
+                    match=qd.MatchAny(any=list(must_status_categories)),
+                )
+            )
+        issue_filter = qd.Filter(must=must_conditions) if must_conditions else None
+
         issue_hits = self._vectors.search(
             ISSUES_COLLECTION,
             query,
             project_keys=project_keys,
+            extra_filter=issue_filter,
             limit=per_source_limit,
             score_threshold=min_score,
         )
+
+        # When structural filter is active, build an allowed set from Supabase
+        # so comment/MR hits on non-matching parent issues get post-filtered.
+        # A caller-supplied `must_issue_keys` (e.g. from feature-tag classification)
+        # intersects on top.
+        allowed_keys: set[str] | None = None
+        if must_conditions:
+            allowed_keys = self._allowed_issue_keys(
+                project_keys, must_issue_types, must_status_categories,
+            )
+        if must_issue_keys is not None:
+            allowed_keys = (
+                set(must_issue_keys) if allowed_keys is None
+                else allowed_keys & set(must_issue_keys)
+            )
+
         hits_by_issue: dict[str, SearchHit] = {}
         for h in issue_hits:
             key = h["issue_key"]
+            if allowed_keys is not None and key not in allowed_keys:
+                continue
             hits_by_issue[key] = SearchHit(
                 issue_key=key,
                 score=h["score"],
@@ -213,6 +257,8 @@ class Searcher:
                 limit=per_source_limit,
                 score_threshold=min_score,
             ):
+                if allowed_keys is not None and h["issue_key"] not in allowed_keys:
+                    continue
                 key = h["issue_key"]
                 existing = hits_by_issue.get(key)
                 if existing is None or h["score"] > existing.score:
@@ -232,6 +278,8 @@ class Searcher:
                 limit=per_source_limit,
                 score_threshold=min_score,
             ):
+                if allowed_keys is not None and h["issue_key"] not in allowed_keys:
+                    continue
                 key = h["issue_key"]
                 existing = hits_by_issue.get(key)
                 if existing is None or h["score"] > existing.score:
@@ -258,6 +306,32 @@ class Searcher:
         return ctx
 
     # ── internal ─────────────────────────────────────────────────────────────
+    def _allowed_issue_keys(
+        self,
+        project_keys: list[str] | None,
+        must_issue_types: list[str] | None,
+        must_status_categories: list[str] | None,
+    ) -> set[str]:
+        """Return the set of issue keys matching the structural filters.
+
+        Used to post-filter comment/MR hits whose Qdrant payload doesn't
+        carry parent-issue metadata.
+        """
+        conditions: list[str] = []
+        params: list[Any] = []
+        if project_keys:
+            conditions.append("project_key = ANY(%s)")
+            params.append([p.upper() for p in project_keys])
+        if must_issue_types:
+            conditions.append("issue_type = ANY(%s)")
+            params.append(list(must_issue_types))
+        if must_status_categories:
+            conditions.append("status_category = ANY(%s)")
+            params.append(list(must_status_categories))
+        where = " AND ".join(conditions) if conditions else "TRUE"
+        rows = self._db.execute(f"SELECT key FROM issues WHERE {where}", tuple(params))
+        return {r["key"] for r in rows}
+
     def _hydrate(self, hits: list[SearchHit]) -> None:
         if not hits:
             return

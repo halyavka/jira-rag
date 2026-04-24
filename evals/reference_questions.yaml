@@ -1,0 +1,121 @@
+# Reference questions for /search and /ask quality evaluation.
+#
+# Each entry:
+#   id           — stable handle (used in results diff)
+#   question     — realistic user query (UK / EN mix is on purpose)
+#   project      — project key filter
+#   must_have    — strict set; recall@k measured against these
+#   should_have  — extra relevant keys; precision@k counts these too
+#   kind         — "concept" / "flow" / "bug" / "lookup"; helps slicing metrics
+#   notes        — human commentary, not used in scoring
+
+questions:
+  # ── concept: "tell me about X" — main user mode ─────────────────────────
+  - id: icebreakers_overview
+    kind: concept
+    project: PID
+    question: "розкажи про IceBreakers — як вони працюють і які є"
+    must_have: [PID-2059, PID-3996, PID-4168, PID-4133]
+    should_have: [PID-3818, PID-4286]
+    notes: Protection, INMAIL config, thumbnails, media — задають ядро фічі
+
+  - id: email_unsubscribe
+    kind: concept
+    project: PID
+    question: "як проходить email unsubscribe flow"
+    must_have: [PID-4415, PID-4420, PID-4413, PID-4173]
+    should_have: [PID-2233, PID-3127, PID-2495, PID-2494, PID-2232]
+
+  - id: subscription_types
+    kind: concept
+    project: PID
+    question: "які типи subscription є у продукті"
+    must_have: [PID-2767, PID-2855]
+    should_have: [PID-1271, PID-1793]
+
+  - id: onboarding_flow
+    kind: concept
+    project: PID
+    question: "як влаштований onboarding flow"
+    must_have: [PID-3718, PID-3717, PID-1069]
+    should_have: [PID-3897, PID-1071, PID-429]
+
+  # ── flow: "how does X work step by step" ─────────────────────────────────
+  - id: ad_metrics_endpoint
+    kind: flow
+    project: PID
+    question: "як працює POST /api/ad-metrics endpoint і яка автентифікація"
+    must_have: [PID-4417]
+    should_have: []
+    notes: Чекліст у PID-4417 має 68 bullet-ів з authentication/authorization specs
+
+  - id: reply_counter_chat
+    kind: flow
+    project: PID
+    question: "як рахується reply counter для chat icebreakers"
+    must_have: [PID-3818]
+    should_have: [PID-3865, PID-3396]
+
+  - id: registration_rules
+    kind: flow
+    project: PID
+    question: "які правила при реєстрації користувача та при зміні імейла"
+    must_have: [PID-4345, PID-3812]
+    should_have: [PID-4094, PID-3990]
+
+  # ── bug: "what's broken / open issues with X" ────────────────────────────
+  - id: icebreakers_issues
+    kind: bug
+    project: PID
+    question: "які є проблеми або баги з icebreaker-ами зараз"
+    must_have: [PID-4286, PID-3818]
+    should_have: [PID-1982, PID-3865]
+    notes: Відкриті баги/moderation errors
+
+  - id: registration_bugs
+    kind: bug
+    project: PID
+    question: "які відомі проблеми з реєстрацією"
+    must_have: [PID-3812]
+    should_have: [PID-3930, PID-4449]
+
+  # ── lookup: direct entity — tests that basic retrieval still works ───────
+  - id: lookup_profile_test
+    kind: lookup
+    project: PID
+    question: "remove profile test group code"
+    must_have: [PID-4453]
+    should_have: []
+
+  - id: lookup_chathouse_photos
+    kind: lookup
+    project: PID
+    question: "Chathouse TU library photos disappear during moderation"
+    must_have: [PID-4428]
+    should_have: []
+
+  # ── checklist-specific: proves that checklist_text is searchable ─────────
+  - id: checklist_ice_breaker_id
+    kind: flow
+    project: PID
+    question: "ice_breaker_id is null reply_count hide flow"
+    must_have: [PID-3818]
+    should_have: []
+    notes: Ключові терміни — ТІЛЬКИ у checklist_text, не в description
+
+  - id: checklist_ad_metrics_auth
+    kind: flow
+    project: PID
+    question: "POST api ad-metrics Bearer token invalid 401 unauthenticated"
+    must_have: [PID-4417]
+    should_have: []
+    notes: Authentication acceptance criteria з checklist
+
+  # ── concept with multilingual challenge ──────────────────────────────────
+  - id: registration_ukrainian
+    kind: concept
+    project: PID
+    question: "реєстрація нового користувача та валідація поштою"
+    must_have: [PID-4345]
+    should_have: [PID-3812, PID-3990]
+    notes: Перевірка що українські запити достатньо матчаться

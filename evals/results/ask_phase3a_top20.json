@@ -1,0 +1,2284 @@
+{
+  "endpoint": "ask",
+  "server": "http://jira-rag:8100",
+  "top_k": 20,
+  "min_score": 0.3,
+  "total_questions": 14,
+  "avg_recall_at_5": 0.512,
+  "avg_recall_at_10": 0.637,
+  "avg_precision_at_5": 0.157,
+  "avg_mrr": 0.381,
+  "avg_latency_ms": 155586.921,
+  "by_kind": {
+    "bug": {
+      "n": 2,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.25,
+      "precision_at_5": 0.0,
+      "mrr": 0.056
+    },
+    "concept": {
+      "n": 5,
+      "recall_at_5": 0.233,
+      "recall_at_10": 0.383,
+      "precision_at_5": 0.2,
+      "mrr": 0.302
+    },
+    "flow": {
+      "n": 5,
+      "recall_at_5": 0.8,
+      "recall_at_10": 0.9,
+      "precision_at_5": 0.16,
+      "mrr": 0.542
+    },
+    "lookup": {
+      "n": 2,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "precision_at_5": 0.2,
+      "mrr": 0.5
+    }
+  },
+  "per_question": [
+    {
+      "id": "icebreakers_overview",
+      "kind": "concept",
+      "question": "розкажи про IceBreakers — як вони працюють і які є",
+      "expected_must": [
+        "PID-2059",
+        "PID-3996",
+        "PID-4133",
+        "PID-4168"
+      ],
+      "expected_should": [
+        "PID-3818",
+        "PID-4286"
+      ],
+      "retrieved": [
+        {
+          "key": "PID-1111",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-2965",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-273",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-879",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-995",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-250",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-1469",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-4133",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-1922",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-360",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-62",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-515",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-1066",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-240",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-1925",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-272",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-1921",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-898",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-1358",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-3846",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.25,
+      "precision_at_5": 0.0,
+      "mrr": 0.125,
+      "latency_ms": 201991.4,
+      "first_match_rank": 8
+    },
+    {
+      "id": "email_unsubscribe",
+      "kind": "concept",
+      "question": "як проходить email unsubscribe flow",
+      "expected_must": [
+        "PID-4173",
+        "PID-4413",
+        "PID-4415",
+        "PID-4420"
+      ],
+      "expected_should": [
+        "PID-2232",
+        "PID-2233",
+        "PID-2494",
+        "PID-2495",
+        "PID-3127"
+      ],
+      "retrieved": [
+        {
+          "key": "PID-2856",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-3127",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-4413",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-1154",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-4415",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-4420",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-2233",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-4173",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-1737",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-2846",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-2494",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-2232",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-2495",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-1790",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-738",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-2828",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-1625",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-4210",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-1620",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-2624",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "precision_at_5": 0.6,
+      "mrr": 0.333,
+      "latency_ms": 170447.0,
+      "first_match_rank": 3
+    },
+    {
+      "id": "subscription_types",
+      "kind": "concept",
+      "question": "які типи subscription є у продукті",
+      "expected_must": [
+        "PID-2767",
+        "PID-2855"
+      ],
+      "expected_should": [
+        "PID-1271",
+        "PID-1793"
+      ],
+      "retrieved": [
+        {
+          "key": "PID-1625",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-145",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-1787",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-2232",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-1792",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-1793",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-1791",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-3897",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-1373",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-1271",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-2324",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-2527",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-4043",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-738",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-1790",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-2451",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-1884",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-3783",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-598",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-261",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "precision_at_5": 0.0,
+      "mrr": 0.0,
+      "latency_ms": 131486.9,
+      "first_match_rank": null
+    },
+    {
+      "id": "onboarding_flow",
+      "kind": "concept",
+      "question": "як влаштований onboarding flow",
+      "expected_must": [
+        "PID-1069",
+        "PID-3717",
+        "PID-3718"
+      ],
+      "expected_should": [
+        "PID-1071",
+        "PID-3897",
+        "PID-429"
+      ],
+      "retrieved": [
+        {
+          "key": "PID-3718",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-3717",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-2868",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-1799",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-3952",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-3382",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-3992",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-3879",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-2598",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-4308",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-4",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-1998",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-3424",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-1714",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-3081",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-4342",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-3405",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-3735",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-429",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-1116",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 0.667,
+      "recall_at_10": 0.667,
+      "precision_at_5": 0.4,
+      "mrr": 1.0,
+      "latency_ms": 171026.4,
+      "first_match_rank": 1
+    },
+    {
+      "id": "ad_metrics_endpoint",
+      "kind": "flow",
+      "question": "як працює POST /api/ad-metrics endpoint і яка автентифікація",
+      "expected_must": [
+        "PID-4417"
+      ],
+      "expected_should": [],
+      "retrieved": [
+        {
+          "key": "PID-4417",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-4308",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-2183",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-2837",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-2563",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-1384",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-2173",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-1838",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-4469",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-3631",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-1165",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-4018",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-1533",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-2632",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-3688",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-2854",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-2576",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-1902",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-1418",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-3294",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "precision_at_5": 0.2,
+      "mrr": 1.0,
+      "latency_ms": 147541.7,
+      "first_match_rank": 1
+    },
+    {
+      "id": "reply_counter_chat",
+      "kind": "flow",
+      "question": "як рахується reply counter для chat icebreakers",
+      "expected_must": [
+        "PID-3818"
+      ],
+      "expected_should": [
+        "PID-3396",
+        "PID-3865"
+      ],
+      "retrieved": [
+        {
+          "key": "PID-1469",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-644",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-3818",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-1925",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-1921",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-2049",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-3332",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-1066",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-1404",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-1164",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-1922",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-1569",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-668",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-931",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-643",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-240",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-2272",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-898",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-4133",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-2003",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "precision_at_5": 0.2,
+      "mrr": 0.333,
+      "latency_ms": 142202.7,
+      "first_match_rank": 3
+    },
+    {
+      "id": "registration_rules",
+      "kind": "flow",
+      "question": "які правила при реєстрації користувача та при зміні імейла",
+      "expected_must": [
+        "PID-3812",
+        "PID-4345"
+      ],
+      "expected_should": [
+        "PID-3990",
+        "PID-4094"
+      ],
+      "retrieved": [
+        {
+          "key": "PID-1625",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-2751",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-738",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-2327",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-4377",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-365",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-595",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-3812",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-3707",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-3403",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-522",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-4345",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-2788",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-1418",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-3783",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-2974",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-3754",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-1796",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-647",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-4378",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.5,
+      "precision_at_5": 0.0,
+      "mrr": 0.125,
+      "latency_ms": 155421.4,
+      "first_match_rank": 8
+    },
+    {
+      "id": "icebreakers_issues",
+      "kind": "bug",
+      "question": "які є проблеми або баги з icebreaker-ами зараз",
+      "expected_must": [
+        "PID-3818",
+        "PID-4286"
+      ],
+      "expected_should": [
+        "PID-1982",
+        "PID-3865"
+      ],
+      "retrieved": [
+        {
+          "key": "PID-1997",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-2000",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-3354",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-4168",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-1233",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-730",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-486",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-1051",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-3818",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-1542",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-2294",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-4135",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-2339",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-3106",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-1030",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-3397",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-113",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-160",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-591",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-2733",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.5,
+      "precision_at_5": 0.0,
+      "mrr": 0.111,
+      "latency_ms": 134155.3,
+      "first_match_rank": 9
+    },
+    {
+      "id": "registration_bugs",
+      "kind": "bug",
+      "question": "які відомі проблеми з реєстрацією",
+      "expected_must": [
+        "PID-3812"
+      ],
+      "expected_should": [
+        "PID-3930",
+        "PID-4449"
+      ],
+      "retrieved": [
+        {
+          "key": "PID-2800",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-486",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-771",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-2779",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-2474",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-340",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-3780",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-1094",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-3314",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-2386",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-1970",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-3331",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-2974",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-2915",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-1030",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-2733",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-2294",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-113",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-2452",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-3770",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "precision_at_5": 0.0,
+      "mrr": 0.0,
+      "latency_ms": 138643.4,
+      "first_match_rank": null
+    },
+    {
+      "id": "lookup_profile_test",
+      "kind": "lookup",
+      "question": "remove profile test group code",
+      "expected_must": [
+        "PID-4453"
+      ],
+      "expected_should": [],
+      "retrieved": [
+        {
+          "key": "PID-1818",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-4453",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-4078",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-2840",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-1617",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-1616",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-3987",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-859",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-732",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-2011",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-3830",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-1236",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-829",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-4262",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-1080",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-229",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-1602",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-3329",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-2910",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-1890",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "precision_at_5": 0.2,
+      "mrr": 0.5,
+      "latency_ms": 178738.0,
+      "first_match_rank": 2
+    },
+    {
+      "id": "lookup_chathouse_photos",
+      "kind": "lookup",
+      "question": "Chathouse TU library photos disappear during moderation",
+      "expected_must": [
+        "PID-4428"
+      ],
+      "expected_should": [],
+      "retrieved": [
+        {
+          "key": "PID-991",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-4428",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-4463",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-1133",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-3831",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-1479",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-326",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-263",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-1644",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-1805",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-1478",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-825",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-363",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-265",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-1566",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-1687",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-186",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-451",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-2373",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-4177",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "precision_at_5": 0.2,
+      "mrr": 0.5,
+      "latency_ms": 137912.3,
+      "first_match_rank": 2
+    },
+    {
+      "id": "checklist_ice_breaker_id",
+      "kind": "flow",
+      "question": "ice_breaker_id is null reply_count hide flow",
+      "expected_must": [
+        "PID-3818"
+      ],
+      "expected_should": [],
+      "retrieved": [
+        {
+          "key": "PID-1066",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-1111",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-3398",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-3818",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-273",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-773",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-3332",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-1917",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-1469",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-2467",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-1959",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-1190",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-879",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-1358",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-1922",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-360",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-3396",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-507",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-465",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-932",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "precision_at_5": 0.2,
+      "mrr": 0.25,
+      "latency_ms": 144705.5,
+      "first_match_rank": 4
+    },
+    {
+      "id": "checklist_ad_metrics_auth",
+      "kind": "flow",
+      "question": "POST api ad-metrics Bearer token invalid 401 unauthenticated",
+      "expected_must": [
+        "PID-4417"
+      ],
+      "expected_should": [],
+      "retrieved": [
+        {
+          "key": "PID-4417",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-2563",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-2837",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-1110",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-2183",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-1384",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-343",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-2173",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-1463",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-4193",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-785",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-2591",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-1078",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-2019",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-4472",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-2209",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-2891",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-3893",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-2072",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-1883",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "precision_at_5": 0.2,
+      "mrr": 1.0,
+      "latency_ms": 158709.5,
+      "first_match_rank": 1
+    },
+    {
+      "id": "registration_ukrainian",
+      "kind": "concept",
+      "question": "реєстрація нового користувача та валідація поштою",
+      "expected_must": [
+        "PID-4345"
+      ],
+      "expected_should": [
+        "PID-3812",
+        "PID-3990"
+      ],
+      "retrieved": [
+        {
+          "key": "PID-1625",
+          "score": 1.0,
+          "source": "ask",
+          "summary": "",
+          "rank": 1
+        },
+        {
+          "key": "PID-2327",
+          "score": 0.99,
+          "source": "ask",
+          "summary": "",
+          "rank": 2
+        },
+        {
+          "key": "PID-647",
+          "score": 0.98,
+          "source": "ask",
+          "summary": "",
+          "rank": 3
+        },
+        {
+          "key": "PID-2974",
+          "score": 0.97,
+          "source": "ask",
+          "summary": "",
+          "rank": 4
+        },
+        {
+          "key": "PID-3294",
+          "score": 0.96,
+          "source": "ask",
+          "summary": "",
+          "rank": 5
+        },
+        {
+          "key": "PID-1530",
+          "score": 0.95,
+          "source": "ask",
+          "summary": "",
+          "rank": 6
+        },
+        {
+          "key": "PID-738",
+          "score": 0.94,
+          "source": "ask",
+          "summary": "",
+          "rank": 7
+        },
+        {
+          "key": "PID-4377",
+          "score": 0.9299999999999999,
+          "source": "ask",
+          "summary": "",
+          "rank": 8
+        },
+        {
+          "key": "PID-364",
+          "score": 0.92,
+          "source": "ask",
+          "summary": "",
+          "rank": 9
+        },
+        {
+          "key": "PID-365",
+          "score": 0.91,
+          "source": "ask",
+          "summary": "",
+          "rank": 10
+        },
+        {
+          "key": "PID-727",
+          "score": 0.9,
+          "source": "ask",
+          "summary": "",
+          "rank": 11
+        },
+        {
+          "key": "PID-2751",
+          "score": 0.89,
+          "source": "ask",
+          "summary": "",
+          "rank": 12
+        },
+        {
+          "key": "PID-1191",
+          "score": 0.88,
+          "source": "ask",
+          "summary": "",
+          "rank": 13
+        },
+        {
+          "key": "PID-1142",
+          "score": 0.87,
+          "source": "ask",
+          "summary": "",
+          "rank": 14
+        },
+        {
+          "key": "PID-3283",
+          "score": 0.86,
+          "source": "ask",
+          "summary": "",
+          "rank": 15
+        },
+        {
+          "key": "PID-522",
+          "score": 0.85,
+          "source": "ask",
+          "summary": "",
+          "rank": 16
+        },
+        {
+          "key": "PID-1418",
+          "score": 0.84,
+          "source": "ask",
+          "summary": "",
+          "rank": 17
+        },
+        {
+          "key": "PID-3324",
+          "score": 0.83,
+          "source": "ask",
+          "summary": "",
+          "rank": 18
+        },
+        {
+          "key": "PID-1818",
+          "score": 0.8200000000000001,
+          "source": "ask",
+          "summary": "",
+          "rank": 19
+        },
+        {
+          "key": "PID-4345",
+          "score": 0.81,
+          "source": "ask",
+          "summary": "",
+          "rank": 20
+        }
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "precision_at_5": 0.0,
+      "mrr": 0.05,
+      "latency_ms": 165235.4,
+      "first_match_rank": 20
+    }
+  ]
+}

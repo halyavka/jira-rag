@@ -1,0 +1,201 @@
+taxonomy:
+  - name: "Chat Messaging"
+    description: "Core chat/dialog messaging between RU and TU users including send, edit, delete, and message rendering."
+    keywords: ["chat", "dialog", "message", "edit message", "delete message", "TU chat", "chathouse", "\u0447\u0430\u0442", "\u043f\u043e\u0432\u0456\u0434\u043e\u043c\u043b\u0435\u043d\u043d\u044f"]
+    examples: ["PID-3452", "PID-923", "PID-566", "PID-17"]
+  - name: "Chat Folders Filters"
+    description: "Folders, filters, sorting, tabs and organization of chats, dialogs and inmails lists."
+    keywords: ["folder", "filter", "featured folder", "hidden threads", "draft", "unreads", "sort", "tabs"]
+    examples: ["PID-934", "PID-544", "PID-2851", "PID-1635"]
+  - name: "Inmails"
+    description: "Inmail feature: sending, limits, tracking, UI and chains of inmail messages."
+    keywords: ["inmail", "inmails", "mails tab", "inmail chain", "mailbox", "mailchain"]
+    examples: ["PID-2098", "PID-2280", "PID-1822", "PID-380"]
+  - name: "Icebreakers"
+    description: "Icebreaker messages, topic tags, chains and related automation for conversation starters."
+    keywords: ["icebreaker", "IB", "miss message icebreaker", "topic tags", "chatIB", "active icebreaker"]
+    examples: ["PID-239", "PID-341", "PID-1754", "PID-1164"]
+  - name: "Chat Requests"
+    description: "Chat request creation, archiving, restore and cleanup logic."
+    keywords: ["chat request", "chat_requests", "restore chat request", "archive", "clean-up"]
+    examples: ["PID-1433", "PID-4121", "PID-1551"]
+  - name: "Virtual Gifts"
+    description: "Virtual gifts / presents feature including UI, categories, status and backend logic."
+    keywords: ["gift", "virtual gifts", "presents", "gift_opening", "sticker pack", "REMODERATION gift"]
+    examples: ["PID-1899", "PID-3639", "PID-3848", "PID-3824"]
+  - name: "Media Photos"
+    description: "User photos including public, private, erotic, upload, counters and media gallery."
+    keywords: ["photo", "private photo", "public photo", "media", "media gallery", "is_erotic", "upload"]
+    examples: ["PID-509", "PID-2097", "PID-2159", "PID-1259"]
+  - name: "Video Feature"
+    description: "Video upload, playback, duration validation and launch on Chathouse/Carthage."
+    keywords: ["video", "video feature", "video duration", "video launch", "video regression"]
+    examples: ["PID-3956", "PID-4035", "PID-4214", "PID-3769"]
+  - name: "Finder Matching"
+    description: "Finder, match results, TU matching by type and finder connection prioritization."
+    keywords: ["finder", "match", "match by type", "finder_connection_prioritisation", "photos counter on finder"]
+    examples: ["PID-3711", "PID-2383", "PID-2097", "PID-1120"]
+  - name: "User Profile"
+    description: "User profile pages, edit profile, my-profile updates and profile visuals for RU/TU."
+    keywords: ["profile", "my-profile", "edit profile", "UserProfilePage", "profile_type", "user profile"]
+    examples: ["PID-1705", "PID-1719", "PID-2868", "PID-4034"]
+  - name: "Registration Login"
+    description: "Signup, login, session start, Google auth and account recovery flows."
+    keywords: ["registration", "login", "session start", "google auth", "SessionStartedEvent", "sign up"]
+    examples: ["PID-59", "PID-1333", "PID-1167", "PID-2560"]
+  - name: "Notifications In-App"
+    description: "In-app, featured activity and online notifications shown inside the product UI."
+    keywords: ["notification", "online notification", "featured activity", "close online now", "notifications"]
+    examples: ["PID-955", "PID-4406", "PID-2596", "PID-440"]
+  - name: "Web Push"
+    description: "Web push notifications subscription, delivery and click tracking."
+    keywords: ["web push", "webpush", "push", "WebPush subscription", "web pushes"]
+    examples: ["PID-3009", "PID-3183", "PID-1418", "PID-1277"]
+  - name: "Email Communications"
+    description: "Transactional and marketing emails, mailing lists, email descriptors and deliverability."
+    keywords: ["email", "mail", "descriptor", "transactional", "mailing", "TOP RU for Emails", "blur in email"]
+    examples: ["PID-1034", "PID-1857", "PID-3900", "PID-1274"]
+  - name: "Email Infrastructure"
+    description: "Email sending infrastructure: SES, Mailgun, domain warming, descriptors, MAIL FROM setup."
+    keywords: ["SES", "Mailgun", "Warmy.io", "descriptor footer", "MAIL FROM", "amourtalks.com", "reputation"]
+    examples: ["PID-2446", "PID-2801", "PID-3677", "PID-2952"]
+  - name: "Domains Setup"
+    description: "Domain registration, configuration, subdomains and redirect/SSL setup."
+    keywords: ["domain", "subdomain", "https redirect", "cloudflare", "CF proxy", "mychatplace.com"]
+    examples: ["PID-3424", "PID-2884", "PID-3921", "PID-57"]
+  - name: "CDN Proxy"
+    description: "CDN configuration, Google CDN migration and CF proxy adjustments for performance."
+    keywords: ["CDN", "Google CDN", "CF proxy", "cloudflare", "CDN costs"]
+    examples: ["PID-3628", "PID-2984", "PID-3995"]
+  - name: "Payments Billing"
+    description: "Payments processing, 3DS, recurring, chargebacks, Solid and iframe payment forms."
+    keywords: ["payment", "3ds", "recurring", "chargebacks", "Solid", "iframe", "ApplePay", "hard decline"]
+    examples: ["PID-1489", "PID-3159", "PID-1298", "PID-3164"]
+  - name: "Pricing Packages"
+    description: "Credit packages, discounts, low credit reminders and price/offer popups."
+    keywords: ["credits", "packages", "discount", "low credits reminder", "first purchase", "premium program", "paywall"]
+    examples: ["PID-2901", "PID-2332", "PID-2406", "PID-3108"]
+  - name: "Supply Admin"
+    description: "Supply admin panel / Pidval tools for managing TU supply entities and configuration."
+    keywords: ["supply", "pidval", "admin panel", "supply admin", "supply creation", "supply region"]
+    examples: ["PID-220", "PID-193", "PID-3790", "PID-307"]
+  - name: "TU Moderation"
+    description: "Moderation of TU profiles, photos, gifts and related moderation workflows."
+    keywords: ["moderation", "Moderation V2", "TU moderation", "remoderate", "profile moderation", "unmoderated"]
+    examples: ["PID-3684", "PID-1726", "PID-443", "PID-3499"]
+  - name: "Trust Safety Antifraud"
+    description: "Antifraud, trusted user detection, underage checks, RU verification and trust safety policies."
+    keywords: ["antifraud", "trusted_user", "underage", "RU verification", "trust & safety", "TU Antifraud"]
+    examples: ["PID-4071", "PID-3570", "PID-4006", "PID-3044"]
+  - name: "Support Tools"
+    description: "Internal support and churn case tools, support-side balance management and ticket tags."
+    keywords: ["support", "churn", "ticket tags", "RU balance management", "support cases", "premium support"]
+    examples: ["PID-1117", "PID-620", "PID-2777", "PID-2068"]
+  - name: "Zendesk Integration"
+    description: "Zendesk bubble, chatbot and help widget integration issues and configuration."
+    keywords: ["zendesk", "zendesk bubble", "zendesk chatbot", "prod-test"]
+    examples: ["PID-4462", "PID-1052"]
+  - name: "Event Tracking"
+    description: "Product event tracking, paralytics, pid.* events and conversion event tables."
+    keywords: ["tracking", "track", "paralytics", "pid.app_load", "pid_conversion_events", "event tracking"]
+    examples: ["PID-1911", "PID-2573", "PID-2822", "PID-269"]
+  - name: "Analytics Dashboards"
+    description: "Tableau, Vertica, Airtable dashboards and BI reporting data pipelines."
+    keywords: ["Tableau", "Vertica", "Airtable", "dashboard", "PnL", "report", "dashboards"]
+    examples: ["PID-1124", "PID-1589", "PID-4240", "PID-2795"]
+  - name: "Partner Reports"
+    description: "Reports and analytics for partners, top buyers, VAMP and supply partner views."
+    keywords: ["partner report", "top buyers", "VAMP", "partner_event_data", "online notifications report", "connections on platform"]
+    examples: ["PID-2461", "PID-2211", "PID-3429", "PID-1970"]
+  - name: "Marketing Attribution"
+    description: "Marketing campaigns, attribution events, postbacks and affiliate event tracking."
+    keywords: ["marketing", "attribution", "postback", "affiliate", "pixel_id", "campaign tracking", "counterparties"]
+    examples: ["PID-2744", "PID-2355", "PID-2462", "PID-3862"]
+  - name: "Ad Platforms Integration"
+    description: "Integrations with Google Ads, TikTok, Taboola, Microsoft Ads and Facebook for cost/creative sync."
+    keywords: ["Google Ads", "TikTok", "Taboola", "Microsoft Ads", "FB Campaigns", "DemandGen", "costs"]
+    examples: ["PID-3728", "PID-2853", "PID-4282", "PID-3325"]
+  - name: "Bid Strategy"
+    description: "Bid coefficients, strategy configuration and multi-bid menu in Pidval marketing tools."
+    keywords: ["bid", "bid strategy", "bid coef", "bid multi menu", "coefficient"]
+    examples: ["PID-3800", "PID-3799", "PID-3862", "PID-307"]
+  - name: "Landing Pages"
+    description: "Landing and index pages, prelandings, SEO and visual copy updates for marketing sites."
+    keywords: ["landing", "prelanding", "index", "lp2", "lp6", "SEO", "Latinesse"]
+    examples: ["PID-4157", "PID-4281", "PID-3411", "PID-1459"]
+  - name: "Web Extension"
+    description: "Browser extension features for translators, registration and hidden folders."
+    keywords: ["extension", "browser extension", "bonus stats", "featured folder with extension"]
+    examples: ["PID-1040", "PID-1167", "PID-916", "PID-2326"]
+  - name: "Translator Tools"
+    description: "Integrated translator, translations on staging and translator bonus features."
+    keywords: ["translator", "translation", "integrated translator", "translations on stage"]
+    examples: ["PID-2610", "PID-1030", "PID-1040"]
+  - name: "External API"
+    description: "Third-party partner API endpoints, credentials, limits and API automation."
+    keywords: ["external-api", "API", "endpoint", "API integration", "API credentials", "list users"]
+    examples: ["PID-1761", "PID-2192", "PID-3552", "PID-2014"]
+  - name: "Finance Reporting"
+    description: "Financial reporting, LTV prediction, ROAS analysis and payouts single source of truth."
+    keywords: ["LTV", "ROAS", "PnL", "payouts", "finance", "lifetime", "regressor"]
+    examples: ["PID-3517", "PID-3883", "PID-1606", "PID-3553"]
+  - name: "Activity Engagement"
+    description: "Activity blocks, wizard activity configs and engagement boosting logic on TU side."
+    keywords: ["activity", "activity block", "wizard", "clean-up activity", "sympathy activity", "probability activity"]
+    examples: ["PID-3027", "PID-1983", "PID-880", "PID-2543"]
+  - name: "Online Status"
+    description: "User online/offline status detection, tracking and display."
+    keywords: ["online", "offline", "online status", "online v2", "s_user_online_start"]
+    examples: ["PID-3237", "PID-1451", "PID-3662", "PID-3088"]
+  - name: "Favorites Likes"
+    description: "Like, favorite and sympathy actions between users and their counters."
+    keywords: ["like", "favorite", "favourite", "sympathy", "unread_count from like"]
+    examples: ["PID-720", "PID-713", "PID-651", "PID-2298"]
+  - name: "Search Filters"
+    description: "User search, ULID/profile search and ethnic/regional search filters."
+    keywords: ["search", "ULID search", "Europe filter", "Multiethnic", "find users", "search filter"]
+    examples: ["PID-4338", "PID-2439", "PID-2335", "PID-2793"]
+  - name: "Seasonal Events"
+    description: "Holiday and seasonal campaigns like Valentine's Day and Christmas design updates."
+    keywords: ["Valentine", "Christmas", "seasonal", "holiday", "event campaign"]
+    examples: ["PID-3913", "PID-3872", "PID-4026"]
+  - name: "Streams Live"
+    description: "Livestreams, live view of TU profiles and PayPal streaming payments flow."
+    keywords: ["stream", "streams", "livestream", "liveview", "PayPal organic"]
+    examples: ["PID-1661", "PID-828", "PID-1822"]
+  - name: "Centrifuge Realtime"
+    description: "Realtime sockets, Centrifuge resubscribe and WebSockets tracking for live updates."
+    keywords: ["Centrifuge", "WebSocket", "resubscribe", "realtime", "sockets"]
+    examples: ["PID-2661", "PID-2643"]
+  - name: "Database Migrations"
+    description: "DB alters, migrations, Percona operations, schema updates and new DB setup."
+    keywords: ["alter", "percona", "migration", "mysql slave", "Redis instance", "DB Users", "schema"]
+    examples: ["PID-3439", "PID-3573", "PID-288", "PID-2668"]
+  - name: "Performance Optimization"
+    description: "Backend and frontend performance tuning, query optimization and speed boosts."
+    keywords: ["optimize", "QPS", "execution time", "main.js size", "speed boost", "optimization"]
+    examples: ["PID-3337", "PID-1450", "PID-4411", "PID-1207"]
+  - name: "Test Automation"
+    description: "Autotests, regression tests, test coverage extension and test documentation."
+    keywords: ["autotest", "regression", "test coverage", "test documentation", "component tests", "test pipeline"]
+    examples: ["PID-2760", "PID-4397", "PID-3951", "PID-3693"]
+  - name: "DevOps Infrastructure"
+    description: "Production setup, GCP, Redis/MySQL provisioning, VPN, RDP access and environment configuration."
+    keywords: ["production", "GCP", "VPN", "RDP", "staging", "environment", "Redis setup", "pingdom"]
+    examples: ["PID-75", "PID-2905", "PID-1652", "PID-157"]
+  - name: "Access Management"
+    description: "Access grants, credentials management and permissions for tools and repositories."
+    keywords: ["access", "credentials", "creds", "repository access", "remove access", "Google Cloud access"]
+    examples: ["PID-37", "PID-4224", "PID-2259", "PID-2044"]
+  - name: "Monitoring Sentry"
+    description: "Error monitoring, Sentry integration, alerting and pingdom checks."
+    keywords: ["sentry", "pingdom", "alerting", "monitoring", "clockwork"]
+    examples: ["PID-329", "PID-1406", "PID-1642", "PID-377"]
+  - name: "Documentation"
+    description: "Confluence and product documentation updates and knowledge base maintenance."
+    keywords: ["documentation", "Confluence", "docs", "test documentation"]
+    examples: ["PID-2673", "PID-3684"]
+  - name: "Other"
+    description: "Fallback category for tickets that do not clearly fit any other feature area."
+    keywords: ["misc", "other", "test ticket", "refactoring", "general"]
+    examples: ["PID-4326", "PID-4330", "PID-274", "PID-2783"]

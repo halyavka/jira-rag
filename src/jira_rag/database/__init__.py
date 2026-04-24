@@ -1,6 +1,7 @@
 from jira_rag.database.client import DatabaseConnection, create_db_connection
 from jira_rag.database.repositories import (
     CommentsRepo,
+    FeatureTagsRepo,
     IssuesRepo,
     MergeRequestsRepo,
     ProjectsRepo,
@@ -17,4 +18,5 @@ __all__ = [
     "MergeRequestsRepo",
     "StatusHistoryRepo",
     "SyncStateRepo",
+    "FeatureTagsRepo",
 ]
